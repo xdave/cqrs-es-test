@@ -1,0 +1,22 @@
+@baseUrl = http://localhost:3000/api/v1
+
+# @name createUser
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@doe.com"
+}
+###
+
+@userId = {{createUser.response.body.*}}
+
+POST {{baseUrl}}/user/changeName
+Content-Type: application/json
+
+{
+    "userId": "{{userId}}",
+    "newName": "John Q. Doe"
+}
+###

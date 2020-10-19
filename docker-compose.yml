@@ -1,0 +1,21 @@
+version: "3.4"
+
+services:
+  api:
+    restart: always
+    image: cqrs-es-test
+    build:
+      context: .
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 3000:3000
+    command: npx nest start -w
+
+  nats:
+    restart: always
+    image: nats
+    ports:
+      - 4222:4222
+      - 6222:6222
+      - 8222:8222
