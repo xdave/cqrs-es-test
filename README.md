@@ -9,7 +9,7 @@ using @nestjs/microservices instead of the @nestjs/cqrs package.
 - docker-compose up --build
 
 ## What
-- Starts an API service with a build-in microservice connected to NATS running in docker
+- Starts an API service with a built-in microservice connected to NATS running in docker
 - See the `tests.http` file for some HTTP tests you can send the server (install the Visual Studio Code [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension)
 
 ## Thoughts
