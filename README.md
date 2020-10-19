@@ -28,3 +28,4 @@ could become their own libraries & services.
 - event-sourced view models
 - snapshots
 - offset table for continuing long-running processes after restarts
+- kubernetes/helm support
