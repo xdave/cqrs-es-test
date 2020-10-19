@@ -25,3 +25,6 @@ could become their own libraries & services.
 - add JWT auth
 - add a real db (postgres, maybe)
 - multi-tenancy
+- event-sourced view models
+- snapshots
+- offset table for continuing long-running processes after restarts
