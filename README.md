@@ -19,3 +19,13 @@ This is configured as a single-project repo, however it can be converted to a mo
 - notifications
 
 could become their own libraries & services.
+
+## TODO
+- split this out into multiple services
+- add JWT auth
+- add a real db (postgres, maybe)
+- multi-tenancy
+- event-sourced view models
+- snapshots
+- offset table for continuing long-running processes after restarts
+- kubernetes/helm support
