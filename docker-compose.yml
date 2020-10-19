@@ -3,14 +3,49 @@ version: "3.4"
 services:
   api:
     restart: always
-    image: cqrs-es-test
+    image: cqrs-es-test-api
     build:
       context: .
     volumes:
-      - ./src:/app/src
+      - ./apps:/app/apps
+      - ./libs:/app/libs
     ports:
       - 3000:3000
-    command: npx nest start -w
+    env_file: .env.example
+    command: npx nest start api -w
+
+  user:
+    restart: always
+    image: cqrs-es-test-user
+    build:
+      context: .
+    volumes:
+      - ./apps:/app/apps
+      - ./libs:/app/libs
+    env_file: .env.example
+    command: npx nest start user -w
+
+  notifications:
+    restart: always
+    image: cqrs-es-test-notifications
+    build:
+      context: .
+    volumes:
+      - ./apps:/app/apps
+      - ./libs:/app/libs
+    env_file: .env.example
+    command: npx nest start notifications -w
+
+  auth:
+    restart: always
+    image: cqrs-es-test-auth
+    build:
+      context: .
+    volumes:
+      - ./apps:/app/apps
+      - ./libs:/app/libs
+    env_file: .env.example
+    command: npx nest start auth -w
 
   nats:
     restart: always

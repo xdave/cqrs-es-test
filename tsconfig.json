@@ -12,6 +12,11 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@app/core/*": ["libs/core/src/*"],
+      "@app/user/*": ["apps/user/src/*"],
+      "@app/notifications/*": ["apps/notifications/src/*"]
+    }
   }
 }
