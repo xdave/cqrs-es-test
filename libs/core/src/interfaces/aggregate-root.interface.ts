@@ -1,4 +1,5 @@
 import { Type } from '@nestjs/common';
+import { IAction } from './action.interface';
 import { ICommand } from './command.interface';
 import { IContext } from './context.interface';
 import { IEvent } from './event.interface';
@@ -21,21 +22,16 @@ interface INamed {
 const handlerKey = <A extends INamed, B extends INamed>(target: A, action: B) =>
   [target.name, action.name].join('-');
 
-export const CommandHandler = (Command: Type<ICommand>) => (
-  target: any,
-  _key: string,
-  desc: PropertyDescriptor,
-) => {
-  CommandHandlers.set(handlerKey(target.constructor, Command), desc.value);
+export const createActionDecorator = <T>(storage: Map<string, T>) => (
+  Action: Type<IAction>,
+) => (target: any, _key: string, desc: TypedPropertyDescriptor<T>) => {
+  if (desc.value) {
+    storage.set(handlerKey(target.constructor, Action), desc.value);
+  }
 };
 
-export const EventHandler = (Event: Type<IEvent>) => (
-  target: any,
-  _key: string,
-  desc: PropertyDescriptor,
-) => {
-  EventHandlers.set(handlerKey(target.constructor, Event), desc.value);
-};
+export const CommandHandler = createActionDecorator(CommandHandlers);
+export const EventHandler = createActionDecorator(EventHandlers);
 
 export interface IProps {
   id: string;
