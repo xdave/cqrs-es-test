@@ -4,17 +4,17 @@ import { User } from '../models/user.model';
 import { IUserRepository } from './user.repository.interface';
 
 @Injectable()
-export class InMemoryUserRepository implements IUserRepository {
+export class UserRepository implements IUserRepository {
   constructor(private readonly eventRepo: IEventRepository) {}
 
-  findById(userId: string): User {
+  async findById(userId: string): Promise<User> {
     const user = new User();
     return user.loadFromHistory(
-      this.eventRepo.loadHistoryByAggregateId(userId),
+      await this.eventRepo.loadHistoryByAggregateId(userId),
     );
   }
 
-  save(user: User): void {
-    this.eventRepo.publishAll(user.getUncommittedEvents());
+  async save(user: User): Promise<void> {
+    await this.eventRepo.publishAll(user.getUncommittedEvents());
   }
 }

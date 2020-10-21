@@ -3,5 +3,17 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
-  }
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "dockerlocal",
+      "database": "cqrs_es_test",
+      "username": "postgres",
+      "password": "postgres"
+    }
+  ]
 }

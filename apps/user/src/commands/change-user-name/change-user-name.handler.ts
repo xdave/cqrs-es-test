@@ -10,8 +10,8 @@ export class ChangeUserNameHandler
   constructor(private readonly userRepo: IUserRepository) {}
 
   @MessagePattern(ChangeUserName.name)
-  execute(@Payload() command: ChangeUserName): void {
-    const user = this.userRepo.findById(command.payload.userId);
+  async execute(@Payload() command: ChangeUserName): Promise<void> {
+    const user = await this.userRepo.findById(command.payload.userId);
     user.execute(command);
     this.userRepo.save(user);
   }

@@ -13,6 +13,7 @@ using @nestjs/microservices instead of the @nestjs/cqrs package.
 ## What does that do?
 - Starts several services that communicate using the `NATS` Transport:
   - `NATS` server
+  - `postgresql` database server
   - REST api gateway
   - `Auth` service
   - `User` service
@@ -21,8 +22,9 @@ using @nestjs/microservices instead of the @nestjs/cqrs package.
 
 ## TODO
 - come up with a smoother process manager/saga solution
+- optimistic concurrency
+- event sequence numbers, versioning
 - add `JWT` auth
-- add a real db (`postgres`, maybe)
 - multi-tenancy
 - event-sourced view models
 - snapshots

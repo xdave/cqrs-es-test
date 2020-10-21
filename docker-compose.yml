@@ -1,4 +1,4 @@
-version: "3.4"
+version: '3.4'
 
 services:
   api:
@@ -54,3 +54,10 @@ services:
       - 4222:4222
       - 6222:6222
       - 8222:8222
+
+  postgres:
+    restart: always
+    image: postgres:alpine
+    env_file: .env.example
+    ports:
+      - 5432:5432

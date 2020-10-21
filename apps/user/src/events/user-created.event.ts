@@ -1,3 +1,4 @@
+import { RegisterEvent } from '@app/core/events/event-registry/event.registry';
 import { IEvent } from '@app/core/interfaces/event.interface';
 
 export interface IUserCreated {
@@ -5,4 +6,5 @@ export interface IUserCreated {
   email: string;
 }
 
+@RegisterEvent()
 export class UserCreated extends IEvent<IUserCreated> {}

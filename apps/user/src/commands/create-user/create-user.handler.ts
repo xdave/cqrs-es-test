@@ -11,10 +11,10 @@ export class CreateUserHandler implements ICommandHandler<CreateUser, string> {
   constructor(private readonly userRepo: IUserRepository) {}
 
   @MessagePattern(CreateUser.name)
-  execute(@Payload() command: CreateUser): string {
+  async execute(@Payload() command: CreateUser): Promise<string> {
     const user = new User();
     user.execute(command);
-    this.userRepo.save(user);
+    await this.userRepo.save(user);
     return user.id;
   }
 }

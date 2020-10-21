@@ -3,12 +3,12 @@ import { Module } from '@nestjs/common';
 import { ChangeUserNameHandler } from './commands/change-user-name/change-user-name.handler';
 import { CreateUserHandler } from './commands/create-user/create-user.handler';
 import { CreateUserProcess } from './commands/create-user/create-user.process';
-import { InMemoryUserRepository } from './repository/user.repository.in-memory';
+import { UserRepository } from './repository/user.repository.impl';
 import { IUserRepository } from './repository/user.repository.interface';
 
 const UserRepositoryProvider = {
   provide: IUserRepository,
-  useClass: InMemoryUserRepository,
+  useClass: UserRepository,
 };
 
 @Module({

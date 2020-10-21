@@ -1,4 +1,4 @@
-import { ofType, Step } from '@app/core/events/event-bus';
+import { ofType, Step } from '@app/core/events/event-bus/event.bus';
 import { IEvent } from '@app/core/interfaces/event.interface';
 import { SendSignupEmail } from '@app/notifications/commands/send-signup-email/send-signup-email.command';
 import { SendSignupEmailRequest } from '@app/notifications/commands/send-signup-email/send-signup-email.request';

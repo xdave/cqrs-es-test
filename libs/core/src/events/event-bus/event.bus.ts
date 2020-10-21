@@ -7,9 +7,9 @@ import {
 import { ModuleRef } from '@nestjs/core';
 import { from, Observable, of, Subject } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
-import { IClientStatic } from '../interfaces/client.interface';
-import { ICommand } from '../interfaces/command.interface';
-import { IEvent } from '../interfaces/event.interface';
+import { IClientStatic } from '../../interfaces/client.interface';
+import { ICommand } from '../../interfaces/command.interface';
+import { IEvent } from '../../interfaces/event.interface';
 
 export const ofType = <T extends IEvent>(Event: Type<T>) =>
   filter<IEvent<any>, T>((event): event is T => event.name === Event.name);

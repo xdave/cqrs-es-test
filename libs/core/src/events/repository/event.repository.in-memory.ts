@@ -11,12 +11,12 @@ export class InMemoryEventRepository implements IEventRepository {
 
   constructor(private readonly client: IClient) {}
 
-  publishAll(events: IEvent<any>[]): void {
+  async publishAll(events: IEvent<any>[]): Promise<void> {
     InMemoryEventRepository.EVENTS.push(...events);
     events.forEach((event) => this.client.publish(event));
   }
 
-  loadHistoryByAggregateId(aggregateId: string): IEvent[] {
+  async loadHistoryByAggregateId(aggregateId: string): Promise<IEvent[]> {
     return InMemoryEventRepository.EVENTS.filter(
       (event) => event.aggregateId === aggregateId,
     ).sort((a, b) => a.timestamp - b.timestamp);
