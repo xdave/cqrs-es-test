@@ -22,9 +22,16 @@ interface INamed {
 const handlerKey = <A extends INamed, B extends INamed>(target: A, action: B) =>
   [target.name, action.name].join('-');
 
-export const createActionDecorator = <T>(storage: Map<string, T>) => (
-  Action: Type<IAction>,
-) => (target: any, _key: string, desc: TypedPropertyDescriptor<T>) => {
+export const createActionDecorator = <
+  S extends IProps,
+  T extends ICommandHandler | IEventHandler<S>
+>(
+  storage: Map<string, T>,
+) => (Action: Type<IAction>) => (
+  target: IAggregateRoot<S>,
+  _propertyKey: string | symbol,
+  desc: TypedPropertyDescriptor<T>,
+) => {
   if (desc.value) {
     storage.set(handlerKey(target.constructor, Action), desc.value);
   }
