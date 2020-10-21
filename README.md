@@ -29,4 +29,5 @@ using @nestjs/microservices instead of the @nestjs/cqrs package.
 - event-sourced view models
 - snapshots
 - offset table for continuing long-running processes after restarts
+- unit/integration/end-to-end testing
 - kubernetes/helm support
