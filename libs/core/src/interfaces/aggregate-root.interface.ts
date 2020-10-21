@@ -11,17 +11,15 @@ interface IEventHandler<T> {
   (event: IEvent): Partial<T>;
 }
 
+const CommandHandlers = new Map<string, ICommandHandler>();
+const EventHandlers = new Map<string, IEventHandler<any>>();
+
 interface INamed {
   name: string;
 }
 
-const CommandHandlers = new Map<string, ICommandHandler>();
-const EventHandlers = new Map<string, IEventHandler<any>>();
-
-const handlerKey = <T extends INamed, A extends INamed>(
-  aggregate: T,
-  Action: A,
-) => [aggregate.name, Action.name].join('-');
+const handlerKey = <A extends INamed, B extends INamed>(target: A, action: B) =>
+  [target.name, action.name].join('-');
 
 export const CommandHandler = (Command: Type<ICommand>) => (
   target: any,
@@ -56,9 +54,7 @@ export abstract class IAggregateRoot<T extends IProps> implements IProps {
   }
 
   execute = (command: ICommand): void => {
-    const handler = CommandHandlers.get(
-      handlerKey(this.constructor, command.constructor),
-    );
+    const handler = CommandHandlers.get(handlerKey(this.constructor, command));
     handler?.call(this, command);
   };
 
@@ -69,10 +65,11 @@ export abstract class IAggregateRoot<T extends IProps> implements IProps {
       }
       this.#events.push(event);
     }
-    const handler = EventHandlers.get(
-      handlerKey(this.constructor, event.constructor),
+    const handler = EventHandlers.get(handlerKey(this.constructor, event));
+    Object.assign<T, Partial<T> | undefined>(
+      this.#props,
+      handler?.call(this, event),
     );
-    Object.assign(this.#props, handler?.call(this, event));
     return this;
   };
 
@@ -86,6 +83,6 @@ export abstract class IAggregateRoot<T extends IProps> implements IProps {
   getUncommittedEvents = (): IEvent[] => this.#events;
 
   toJSON(): Readonly<T> {
-    return Object.freeze(this.#props);
+    return this.#props;
   }
 }
