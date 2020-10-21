@@ -4,7 +4,7 @@ import { IContext } from './context.interface';
 import { IEvent } from './event.interface';
 
 export abstract class IClientStatic {
-  abstract execute<R>(
+  abstract execute<R = void>(
     action: IAction,
     reason?: Partial<IContext>,
   ): Observable<R>;

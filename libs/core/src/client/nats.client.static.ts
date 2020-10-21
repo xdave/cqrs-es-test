@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ClientProxyFactory } from '@nestjs/microservices/client';
+import { Observable } from 'rxjs';
 import { NatsConfigService } from '../config/nats-config/nats-config.service';
 import { IAction } from '../interfaces/action.interface';
 import { IClient } from '../interfaces/client.interface';
@@ -12,9 +13,14 @@ import { IEvent } from '../interfaces/event.interface';
  */
 @Injectable()
 export class NatsClientStatic implements IClient {
-  client = ClientProxyFactory.create(NatsConfigService.createOptions());
+  client = ClientProxyFactory.create(this.natsConfig.createOptions());
 
-  execute(action: IAction, reason?: Partial<IContext>) {
+  constructor(protected readonly natsConfig: NatsConfigService) {}
+
+  execute<R = void>(
+    action: IAction,
+    reason?: Partial<IContext>,
+  ): Observable<R> {
     if (reason) {
       IContext.copy(reason, action);
     }

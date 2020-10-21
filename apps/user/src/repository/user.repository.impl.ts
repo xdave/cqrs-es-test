@@ -8,8 +8,7 @@ export class UserRepository implements IUserRepository {
   constructor(private readonly eventRepo: IEventRepository) {}
 
   async findById(userId: string): Promise<User> {
-    const user = new User();
-    return user.loadFromHistory(
+    return new User().loadFromHistory(
       await this.eventRepo.loadHistoryByAggregateId(userId),
     );
   }

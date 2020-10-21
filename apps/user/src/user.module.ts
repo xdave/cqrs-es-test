@@ -13,7 +13,7 @@ const UserRepositoryProvider = {
 
 @Module({
   imports: [CoreModule],
-  providers: [UserRepositoryProvider, CreateUserProcess],
   controllers: [CreateUserHandler, ChangeUserNameHandler],
+  providers: [UserRepositoryProvider, CreateUserProcess],
 })
 export class UserModule {}

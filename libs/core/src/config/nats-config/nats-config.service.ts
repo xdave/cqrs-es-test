@@ -18,15 +18,18 @@ export class NatsConfigService {
     return `nats://${this.host}:${this.port}`;
   }
 
-  static createOptions(queue?: string): NatsOptions {
-    const natsConfig = new NatsConfigService(new ConfigService());
-
+  createOptions(queue?: string): NatsOptions {
     return {
       transport: Transport.NATS,
       options: {
-        url: natsConfig.url,
+        url: this.url,
         queue,
       },
     };
+  }
+
+  static createOptions(queue?: string): NatsOptions {
+    const natsConfig = new NatsConfigService(new ConfigService());
+    return natsConfig.createOptions(queue);
   }
 }
