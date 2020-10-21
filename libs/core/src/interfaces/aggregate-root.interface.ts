@@ -78,7 +78,7 @@ export abstract class IAggregateRoot<T extends IProps> implements IProps {
 
   loadFromHistory = (events: IEvent[]): this => {
     return events.reduce(
-      (user, event) => user.apply(event, undefined, true),
+      (aggregate, event) => aggregate.apply(event, undefined, true),
       this,
     );
   };
