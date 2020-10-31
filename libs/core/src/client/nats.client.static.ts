@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { NatsConfigService } from '../config/nats-config/nats-config.service';
 import { IAction } from '../interfaces/action.interface';
 import { IClient } from '../interfaces/client.interface';
-import { IContext } from '../interfaces/context.interface';
+import { Context } from '../interfaces/context.interface';
 import { IEvent } from '../interfaces/event.interface';
 
 /**
@@ -17,12 +17,9 @@ export class NatsClientStatic implements IClient {
 
   constructor(protected readonly natsConfig: NatsConfigService) {}
 
-  execute<R = void>(
-    action: IAction,
-    reason?: Partial<IContext>,
-  ): Observable<R> {
+  execute<R = void>(action: IAction, reason?: Partial<Context>): Observable<R> {
     if (reason) {
-      IContext.copy(reason, action);
+      Context.copy(reason, action.context);
     }
     console.log(action);
     return this.client.send(action.name, action);

@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { IAction } from './action.interface';
 import { ICommand } from './command.interface';
-import { IContext } from './context.interface';
+import { Context } from './context.interface';
 import { IEvent } from './event.interface';
 
 interface ICommandHandler {
@@ -61,10 +61,10 @@ export abstract class IAggregateRoot<T extends IProps> implements IProps {
     handler?.call(this, command);
   };
 
-  apply = (event: IEvent, context?: IContext, isFromHistory = false): this => {
+  apply = (event: IEvent, context?: Context, isFromHistory = false): this => {
     if (!isFromHistory) {
       if (context) {
-        IContext.copy(context, event);
+        Context.copy(context, event.context);
       }
       this.#events.push(event);
     }

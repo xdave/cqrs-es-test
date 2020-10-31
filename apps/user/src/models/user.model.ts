@@ -18,13 +18,13 @@ export class User extends IAggregateRoot<IUser> {
   @CommandHandler(CreateUser)
   create(command: CreateUser): void {
     const { id, name, email } = command.payload;
-    this.apply(new UserCreated(id, { name, email }), command);
+    this.apply(new UserCreated(id, { name, email }), command.context);
   }
 
   @CommandHandler(ChangeUserName)
   changeName(command: ChangeUserName): void {
     const { userId, newName } = command.payload;
-    this.apply(new UserNameChanged(userId, { newName }), command);
+    this.apply(new UserNameChanged(userId, { newName }), command.context);
   }
 
   @EventHandler(UserCreated)

@@ -1,8 +1,9 @@
-import { IContext } from './context.interface';
+import { Context } from './context.interface';
 
-export abstract class IAction<T = any> extends IContext {
+export abstract class IAction<T = any> {
   name = this.constructor.name;
-  constructor(readonly payload: T) {
-    super();
-  }
+  context = new Context();
+  id = this.context.id;
+  timestamp = this.context.timestamp;
+  constructor(readonly payload: T) {}
 }

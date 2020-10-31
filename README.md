@@ -21,7 +21,6 @@ using @nestjs/microservices instead of the @nestjs/cqrs package.
 - See the `tests.http` file for some HTTP tests you can send the `api` (install the Visual Studio Code [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension)
 
 ## TODO
-- come up with a smoother process manager/saga solution
 - optimistic concurrency
 - event sequence numbers, versioning
 - add `JWT` auth

@@ -1,12 +1,14 @@
 import {
   Injectable,
+  Logger,
   OnApplicationBootstrap,
+  OnModuleDestroy,
   Scope,
   Type,
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { from, Observable, of, Subject } from 'rxjs';
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { from, Observable, ReplaySubject, Subscription } from 'rxjs';
+import { filter, map, mergeMap, take } from 'rxjs/operators';
 import { IClientStatic } from '../../interfaces/client.interface';
 import { ICommand } from '../../interfaces/command.interface';
 import { IEvent } from '../../interfaces/event.interface';
@@ -35,8 +37,14 @@ export const Step = () => (
 };
 
 @Injectable({ scope: Scope.DEFAULT })
-export class EventBus implements OnApplicationBootstrap {
-  private subject$ = new Subject<IEvent>();
+export class EventBus implements OnApplicationBootstrap, OnModuleDestroy {
+  private logger = new Logger(this.constructor.name);
+  private subject$ = new ReplaySubject<IEvent>(1);
+  private subscription!: Subscription;
+
+  get event$(): Observable<IEvent> {
+    return this.subject$.asObservable();
+  }
 
   constructor(
     private readonly client: IClientStatic,
@@ -48,26 +56,37 @@ export class EventBus implements OnApplicationBootstrap {
   }
 
   onApplicationBootstrap(): void {
-    this.subject$
+    this.logger.log(`Subscribing to Sagas...`);
+    this.subscription = from(Steps)
       .pipe(
-        mergeMap((event) =>
-          from(Steps).pipe(
-            map((registration) => this.getProcessStep(registration)),
-            mergeMap((step) => step(of(event))),
-            filter((result): result is ICommand => result instanceof ICommand),
-            mergeMap((command) => this.client.execute(command, event)),
-          ),
-        ),
+        map((registration) => this.getProcessStep(registration)),
+        filter((step): step is IProcessStep => !!step),
+        mergeMap((step) => step(this.subject$)),
+        filter((result): result is ICommand => result instanceof ICommand),
       )
-      .subscribe();
+      .subscribe((command) =>
+        this.subject$
+          .pipe(
+            take(1),
+            mergeMap((event) => this.client.execute(command, event.context)),
+          )
+          .subscribe(),
+      );
   }
 
-  private getProcessStep(registration: IProcessStepRegistration): IProcessStep {
-    const options = { strict: false };
-    const instance = this.moduleRef.get<IProcessManager>(
-      registration.processManager,
-      options,
-    );
-    return instance[registration.step];
+  onModuleDestroy(): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+      this.logger.log(`Unsubscribed from Sagas.`);
+    }
+  }
+
+  private getProcessStep(
+    registration: IProcessStepRegistration,
+  ): IProcessStep | undefined {
+    return Object.getOwnPropertyDescriptor(
+      this.moduleRef.get(registration.processManager, { strict: false }) ?? {},
+      registration.step,
+    )?.value;
   }
 }
