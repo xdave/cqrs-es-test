@@ -21,12 +21,12 @@ using @nestjs/microservices instead of the @nestjs/cqrs package.
 - See the `tests.http` file for some HTTP tests you can send the `api` (install the Visual Studio Code [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension)
 
 ## TODO
-- optimistic concurrency
-- event sequence numbers, versioning
-- add `JWT` auth
-- multi-tenancy
-- event-sourced view models
-- snapshots
-- offset table for continuing long-running processes after restarts
-- unit/integration/end-to-end testing
-- kubernetes/helm support
+- [ ] optimistic concurrency
+- [ ] event sequence numbers, versioning
+- [ ] add `JWT` auth
+- [ ] multi-tenancy
+- [ ] event-sourced view models
+- [ ] snapshots
+- [ ] offset table for continuing long-running processes after restarts
+- [ ] unit/integration/end-to-end testing
+- [ ] kubernetes/helm support
