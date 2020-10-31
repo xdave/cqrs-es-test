@@ -20,7 +20,9 @@ using @nestjs/microservices instead of the @nestjs/cqrs package.
   - `Notifications` service
 - See the `tests.http` file for some HTTP tests you can send the `api` (install the Visual Studio Code [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension)
 
-## TODO
+## Features/TODO
+- [x] `postgres` support through [MikroORM](https://mikro-orm.io/)
+- [x] process manager/sagas that work like @nestjs/cqrs
 - [ ] optimistic concurrency
 - [ ] event sequence numbers, versioning
 - [ ] add `JWT` auth
